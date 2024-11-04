@@ -1,0 +1,2 @@
+delete from students where id=('20'::int4)[][]
+Person{id=15, name='Olivia', surname='Harris', age=21, email='olivia.harris@example.com', phone='555-0115', grade='A', address='999 Hawthorn St, Springfield, IL'}
