@@ -26,6 +26,7 @@ public class StudentServiceImpl implements CommonService<Student>, StudentServic
         preparedStatement.setString(7, entity.getGrade());
         preparedStatement.setString(8, entity.getAddress());
         preparedStatement.executeUpdate();
+        connection.close();
         return entity;
     }
 
