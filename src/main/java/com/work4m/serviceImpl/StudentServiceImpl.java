@@ -1,5 +1,6 @@
 package com.work4m.serviceImpl;
 
+import com.work4m.dataBase.DatabaseConnection;
 import com.work4m.fileUtil.FileWriteReader;
 import com.work4m.model.entity.Student;
 import com.work4m.service.CommonService;
@@ -12,11 +13,11 @@ import java.util.List;
 public class StudentServiceImpl implements CommonService<Student>, StudentService {
     @Override
     public Student add(Student entity) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
 
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into students values(?,?,?,?,?,?,?,?)");
+        Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into students values(?,?,?,?,?,?,?,?)");
+
         preparedStatement.setInt(1, entity.getId());
         preparedStatement.setString(2, entity.getName());
         preparedStatement.setString(3, entity.getSurname());
