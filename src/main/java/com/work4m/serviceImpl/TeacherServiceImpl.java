@@ -1,5 +1,6 @@
 package com.work4m.serviceImpl;
 
+import com.work4m.dataBase.DatabaseConnection;
 import com.work4m.model.entity.Student;
 import com.work4m.model.entity.Teacher;
 import com.work4m.service.CommonService;
@@ -13,10 +14,12 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public Teacher add(Teacher entity) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
 
-        PreparedStatement preparedStatement = connection.prepareStatement("insert into teacher values(?,?,?,?,?,?,?,?,?)");
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("insert into teacher values(?,?,?,?,?,?,?,?,?)");
+
         preparedStatement.setInt(1, entity.getId());
         preparedStatement.setString(2, entity.getName());
         preparedStatement.setString(3, entity.getSurname());
@@ -28,38 +31,44 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
         preparedStatement.setString(9, entity.getSpecialty());
 
         preparedStatement.executeUpdate();
+
         connection.close();
         return entity;
     }
 
     @Override
     public Teacher update(Integer id, Teacher entity) throws SQLException {
+
         delete(id);
+
         add(entity);
+
         return entity;
     }
 
     @Override
     public Integer delete(Integer id) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
+        Connection connection = DatabaseConnection.getConnection();
 
         PreparedStatement preparedStatement = connection.prepareStatement("delete from teacher where id=?");
         preparedStatement.setInt(1, id);
+
         int deletedId = preparedStatement.executeUpdate();
+
         connection.close();
         return deletedId;
     }
 
     @Override
     public Teacher getById(Integer id) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
+
+        Connection connection = DatabaseConnection.getConnection();
 
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from teacher where id = " + id);
 
         if (resultSet.next()) {
+
             Integer userId = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -70,9 +79,11 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
             String degrees = resultSet.getString(8);
             String specialty = resultSet.getString(9);
 
-            Teacher teacher = new Teacher(id,name, surname, age, email, phone, experience, degrees,specialty);
+            Teacher teacher = new Teacher(userId,name, surname, age, email, phone, experience, degrees,specialty);
+
             connection.close();
             return teacher;
+
         }else{
             throw new SQLException("Student not found");
         }
@@ -81,8 +92,8 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getAll() throws SQLException {
-        Connection connection =
-                DriverManager.getConnection("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
+
+        Connection connection = DatabaseConnection.getConnection();
 
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("select * from teacher");
@@ -90,6 +101,7 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname  = resultSet.getString(3);
@@ -109,16 +121,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersExperienceLessThan(Integer experience) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE experience <= ?");
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("SELECT * FROM teacher WHERE experience <= ?");
         preparedStatement.setInt(1, experience);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -138,16 +152,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersExperienceGreaterThan(Integer experience) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE experience >= ?");
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("SELECT * FROM teacher WHERE experience >= ?");
         preparedStatement.setInt(1, experience);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -167,16 +183,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersDegreesLessThan(Integer degrees) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE degrees <= ?");
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("SELECT * FROM teacher WHERE degrees <= ?");
         preparedStatement.setInt(1, degrees);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -196,16 +214,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersDegreesGreaterThan(Integer degrees) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE degrees >= ?");
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("SELECT * FROM teacher WHERE degrees >= ?");
         preparedStatement.setInt(1, degrees);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -225,16 +245,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersSpeciality(Integer speciality) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE speciality = ?");
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("SELECT * FROM teacher WHERE speciality = ?");
         preparedStatement.setInt(1, speciality);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -254,16 +276,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersAgeOlderThan(Integer age) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE age >= ?");
+
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("SELECT * FROM teacher WHERE age >= ?");
         preparedStatement.setInt(1, age);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -283,9 +307,9 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getTeachersAgeYoungerThan(Integer age) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
+
+        Connection connection = DatabaseConnection.getConnection();
+
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM teacher WHERE age <= ?");
         preparedStatement.setInt(1, age);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -293,6 +317,7 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
         List<Teacher> teacherList = new ArrayList<>();
 
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
@@ -312,17 +337,18 @@ public class TeacherServiceImpl implements CommonService<Teacher>, TeacherServic
 
     @Override
     public List<Teacher> getPhoneNumber(String prefiks) throws SQLException {
-        Connection connection =
-                DriverManager.getConnection
-                        ("jdbc:postgresql://localhost:5432/school","postgres","MerdanMT68");
 
-        PreparedStatement preparedStatement = connection.prepareStatement("select * from teacher where phone like ? ");
+        Connection connection = DatabaseConnection.getConnection();
+
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("select * from teacher where phone like ? ");
         preparedStatement.setString(1, prefiks+"%");
-
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Teacher> teacherList = new ArrayList<>();
+
         while (resultSet.next()) {
+
             Integer id = resultSet.getInt(1);
             String name = resultSet.getString(2);
             String surname = resultSet.getString(3);
